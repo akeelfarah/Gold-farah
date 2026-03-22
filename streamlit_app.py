@@ -7,53 +7,49 @@ except ImportError:
 
 st.set_page_config(page_title="جوست ماركت - تسعير الذهب", page_icon="🔱", layout="wide")
 
-# التنسيق النهائي مع إخفاء العلامات المائية
 st.markdown("""
     <style>
-    /* إخفاء القوائم والشريط السفلي تماماً */
     #MainMenu, footer, header {visibility: hidden;}
     .stDeployButton {display:none;}
-    
     [data-testid="stAppViewContainer"] { background-color: #1a1a16; color: white; }
     * { direction: rtl; }
-    
     .main-title { text-align: center; color: #ffd700; font-size: 45px; font-weight: bold; }
-    
     .stNumberInput label { 
         width: 100% !important; text-align: center !important; 
         color: #ffd700 !important; font-size: 35px !important; 
         font-weight: bold !important; display: block !important; 
     }
-    
     div.stNumberInput { max-width: 700px; margin: 0 auto !important; }
     input { 
         text-align: center !important; font-size: 35px !important; height: 75px !important; 
         color: white !important; background-color: #262621 !important; 
         border: 2px solid #ffd700 !important; border-radius: 15px !important; 
     }
-    
     .price-card { 
         border: 1px solid #3d3d36; padding: 35px; border-radius: 15px; 
         text-align: center; background-color: #262621; margin-top: 20px; 
     }
     .price-val { color: white; font-size: 50px; font-weight: bold; margin-top: 10px; }
     .gold-label { color: #ffd700; font-size: 24px; font-weight: bold; }
-    
     .btn-gold { background-color: #ffd700; color: #000 !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; }
     .btn-white { background-color: white; color: #000 !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; }
     .btn-wa { background-color: #25d366; color: white !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; }
-    
     .developer-credit { text-align: center; color: #ffd700; font-size: 25px; font-weight: bold; margin-top: 50px; }
     </style>
 """, unsafe_allow_html=True)
 
 def get_gold_spot_price():
+    # تحديث السعر الافتراضي إلى 4497.0 بناءً على طلبك
+    default_price = 4497.0
     if YF_AVAILABLE:
         try:
             gold = yf.Ticker("GC=F")
-            return round(gold.history(period="1d")['Close'].iloc[-1], 2)
-        except: return 2290.0
-    return 2290.0
+            data = gold.history(period="1d")
+            if not data.empty:
+                return round(data['Close'].iloc[-1], 2)
+        except:
+            return default_price
+    return default_price
 
 st.markdown("<div class='main-title'>🔱 نظام تسعير الذهب العالمي 🔱</div>", unsafe_allow_html=True)
 live_price = get_gold_spot_price()
@@ -61,7 +57,9 @@ live_price = get_gold_spot_price()
 col_main, col_side = st.columns([2.3, 1])
 
 with col_main:
+    # سيظهر السعر الآن 4497.0 كقيمة افتراضية
     ounce_input = st.number_input("أدخل سعر الأونصة العالمي الحالي ($)", value=float(live_price))
+    
     troy_ounce = 31.1035
     p24 = ounce_input / troy_ounce
     p21 = p24 * 0.875
