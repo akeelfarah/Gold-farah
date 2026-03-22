@@ -32,17 +32,17 @@ ads_verify_and_script = f"""
 """
 components.html(ads_verify_and_script, height=0)
 
-# --- 3. التنسيق الجمالي (CSS) - الخلفية المطلوبة #755220، إطار ذهبي، وتصميم متجاوب ---
+# --- 3. التنسيق الجمالي (CSS) - خلفية مخصصة باللون #755220 ---
 st.markdown("""
     <style>
     /* إخفاء علامات Streamlit الافتراضية (القوائم والتذييل) */
     #MainMenu, footer, header {visibility: hidden;}
     .stDeployButton {display:none;}
     
-    /* تصميم الخلفية باللون البني الجديد #755220 وإضافة الإطار الذهبي المحيط */
+    /* تصميم الخلفية باللون البني المطلوب #755220 وإضافة الإطار الذهبي المحيط */
     [data-testid="stAppViewContainer"] {
-        background-color: #755220; /* اللون الذي طلبته */
-        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+        background-color: #755220; 
+        background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)),
                           url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDUwIiBoZWlnaHQ9IjM5MSIgdmlld0JveD0iMCAwIDEwNTAgMzkxIj48cGF0aCBkPSJNOTU5IDM0NmwzNyAyMSAyNCA0NE04MjQgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMjU5IDEwOEwzMDQgMTI2bDM0LTQzbC0zNC00M0wyNTkgNjVNMzg0IDY1TDQyOCA4MmwzNC00M0w0MjggNGwtNDQtNDNMMzg0IDY1TTEzNSA2NWw0NCAxN2wzNC00M0wxNzkgNHwtNDQtNDNMMTM1IDY1TTAgNjVsNDQgMTdsMzQtNDNMNDQgNHwtNDQtNDNMMCA2NU01NTAgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNODU5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNNDQ5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTU5IDI0OGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTAgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNNDAwIDI0OGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTAgMzQ2bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAzNDZsLTEzLTQzbC0zNC00M0w5NTkgMzQ2TTQ5OSAzNDZsMzItMTggMzIgMTggMzIgMTgtMzYtNDRGNTMzIDM0NmwtMzIgMTgtMzIgMTgvPiA8cGF0aCBkPSJNMzQ5IDEwOGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTU0OSAxMDhsLTMyLTQzbC0zNC00M0w0NTkgNjVNMTE5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAyNDhsLTEzLTQzbC0zNC00M0w5NTkgMjQ4TTczOSAyNDhsLTMyLTQzbC0zNC00M0w2NDkgMTc4TTMzOSAyNDhsLTMyLTQzbC0zNC00M0wyNDkgMTc4TTE0OSAzNDZ sMzItMTggMzIgMTggMzIgMTgtMzYtNDREMTgzIDM0NmwtMzIgMTgtMzIgMTgvPiA8L3N2Zz4=');
         background-repeat: repeat;
         background-attachment: fixed;
@@ -70,7 +70,7 @@ st.markdown("""
     .main-title { text-align: center; color: #ffd700; font-size: 45px; font-weight: bold; margin-bottom: 5px; text-shadow: 2px 2px 10px rgba(255, 215, 0, 0.4); }
     .sub-title { text-align: center; color: #888; font-size: 18px; margin-bottom: 30px; }
     
-    /* تنسيق خانة إدخال السعر - متجاوبة وموسعة */
+    /* تنسيق خانة إدخال السعر */
     .stNumberInput label { 
         width: 100% !important; text-align: center !important; 
         color: #ffd700 !important; font-size: 35px !important; 
@@ -83,23 +83,27 @@ st.markdown("""
         border: 2px solid #ffd700 !important; border-radius: 15px !important; 
     }
     
-    /* بطاقات عرض أسعار الذهب - متجاوبة وفخمة */
+    /* بطاقات عرض أسعار الذهب */
     .price-card { 
         border: 1px solid #3d3d36; padding: 35px; border-radius: 15px; 
         text-align: center; background-color: rgba(0,0,0,0.5); margin-top: 20px; 
         box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        min-width: 200px; /* لضمان عدم صغر الحجم في الموبايل */
+        min-width: 200px;
     }
     .price-val { color: white; font-size: 50px; font-weight: bold; margin-top: 10px; }
     .gold-label { color: #ffd700; font-size: 24px; font-weight: bold; }
     
-    /* تنسيق القسم الجانبي (الأزرار) */
+    /* تنسيق القسم الجانبي المطور مع رمز الشريك */
     .agency-box {
         border: 2px solid #ffd700; padding: 25px; border-radius: 15px; 
-        background-color: rgba(0,0,0,0.5); text-align: center;
+        background-color: rgba(0,0,0,0.6); text-align: center;
         box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
     }
-    .agency-logo-container { text-align: center; margin-bottom: 20px; color: #ffd700; }
+    .partner-code-display {
+        background: #ffd700; color: #000; padding: 10px; border-radius: 8px;
+        font-family: monospace; font-size: 22px; font-weight: bold;
+        margin: 15px 0; border: 2px solid white;
+    }
     .btn-gold { background-color: #ffd700; color: #000 !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; font-size: 18px; }
     .btn-white { background-color: white; color: #000 !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; font-size: 18px; }
     .btn-wa { background-color: #25d366; color: white !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; font-size: 18px; }
@@ -133,27 +137,29 @@ with col_main:
     # خانة إدخال السعر
     ounce_input = st.number_input("أدخل سعر الأونصة العالمي الحالي ($)", value=float(live_price))
     
-    # العمليات الحسابية بناءً على وزن الأونصة
+    # العمليات الحسابية
     troy_ounce = 31.1035
     p24 = ounce_input / troy_ounce
     p21 = p24 * 0.875
     p18 = p24 * 0.75
     
-    # عرض بطاقات الأسعار - متجاوبة
+    # عرض بطاقات الأسعار
     c1, c2, c3 = st.columns(3)
     with c1: st.markdown(f"<div class='price-card'><div class='gold-label'>عيار 24</div><div class='price-val'>${p24:.2f}</div></div>", unsafe_allow_html=True)
     with c2: st.markdown(f"<div class='price-card'><div class='gold-label'>عيار 21</div><div class='price-val'>${p21:.2f}</div></div>", unsafe_allow_html=True)
     with c3: st.markdown(f"<div class='price-card'><div class='gold-label'>عيار 18</div><div class='price-val'>${p18:.2f}</div></div>", unsafe_allow_html=True)
 
 with col_side:
-    # القسم الجانبي المخصص لـ "جوست ماركت" وشعار الوكالة
+    # القسم الجانبي مع إضافة رمز الشريك تحت قسم الوكالة
     st.markdown(f"""
         <div class='agency-box'>
-            <div class='agency-logo-container'>
+            <div style='text-align: center; margin-bottom: 20px; color: #ffd700;'>
                 <span style='font-size: 50px;'>🔱</span><br>
                 <span style='font-size: 28px; font-weight: bold;'>جوست ماركت</span>
             </div>
             <h2 style='color: #ffd700; margin-bottom: 15px;'>📉 استثمر في الذهب</h2>
+            <p style='font-size: 14px; color: #eee;'>أدخل رمز الشريك التالي عند التسجيل لضمان ميزات الوكالة:</p>
+            <div class='partner-code-display'>4f59i0rjez</div>
             <a class='btn-gold' href='https://justmarkets.com/'>فتح حساب تداول تحت وكالتنا</a>
             <a class='btn-white' href='#'>تحميل تطبيق مباشر</a>
             <a class='btn-wa' href='https://wa.me/963950555563'>💬 تواصل واتساب مباشر</a>
@@ -161,14 +167,13 @@ with col_side:
         </div>
     """, unsafe_allow_html=True)
 
-# --- 6. قسم سياسة الخصوصية واستخدام البيانات ---
+# --- 6. قسم سياسة الخصوصية ---
 st.markdown("<br><br>", unsafe_allow_html=True)
 with st.expander("📄 سياسة الخصوصية لموقع جوست ماركت"):
     st.write("""
     ### سياسة الخصوصية واستخدام البيانات
     هذا الموقع يوفر أسعار الذهب للأغراض المعلوماتية فقط. نحن لا نجمع أي بيانات شخصية أو حساسة عن زوارنا. 
     يتم استخدام كوكيز الطرف الثالث عبر **Google AdSense** لعرض الإعلانات بناءً على زياراتك السابقة.
-    بإمكانك تعطيل ملفات تعريف الارتباط من إعدادات متصفحك في أي وقت.
     """)
 
 # التوقيع الذهبي
