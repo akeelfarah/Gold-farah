@@ -2,13 +2,13 @@ import streamlit as st
 import streamlit.components.v1 as components
 import os
 
-# --- 1. إثبات الملكية لـ AdSense (Meta Tag & ads.txt) ---
-# كود التحقق الجديد الذي أرسلته
+# --- 1. إثبات الملكية لـ AdSense (Meta Tag) ---
+# وضع كود التحقق الذي أرسلته لي في الأعلى
 verification_meta = """
 <meta name="google-adsense-account" content="ca-pub-6456486381436649">
 """
 
-# دالة لخدمة ملف ads.txt لمنع أخطاء التحقق المستقبلي
+# دالة لدعم التحقق عبر رابط ads.txt إذا طلبه جوجل
 if "ads" in st.query_params:
     if os.path.exists("ads.txt"):
         with open("ads.txt", "r") as f:
@@ -21,10 +21,10 @@ try:
 except ImportError:
     YF_AVAILABLE = False
 
-# --- 2. إعدادات الصفحة والتصميم ---
+# --- 2. إعدادات الصفحة والتنسيق البصري ---
 st.set_page_config(page_title="جوست ماركت - تسعير الذهب", page_icon="🔱", layout="wide")
 
-# حقن كود التحقق وكود الإعلانات في رأس الصفحة
+# حقن كود التحقق وكود الإعلانات معاً في رأس الصفحة
 ads_and_verify = f"""
 {verification_meta}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6456486381436649"
@@ -32,14 +32,14 @@ ads_and_verify = f"""
 """
 components.html(ads_and_verify, height=0)
 
-# --- 3. التنسيق الجمالي وإخفاء علامات Streamlit ---
+# التنسيق (CSS) وإخفاء علامات Streamlit
 st.markdown("""
     <style>
     #MainMenu, footer, header {visibility: hidden;}
     .stDeployButton {display:none;}
     [data-testid="stAppViewContainer"] { background-color: #1a1a16; color: white; }
     * { direction: rtl; }
-    .main-title { text-align: center; color: #ffd700; font-size: 45px; font-weight: bold; margin-bottom: 5px; }
+    .main-title { text-align: center; color: #ffd700; font-size: 45px; font-weight: bold; }
     .sub-title { text-align: center; color: #888; font-size: 18px; margin-bottom: 30px; }
     .stNumberInput label { width: 100% !important; text-align: center !important; color: #ffd700 !important; font-size: 35px !important; font-weight: bold !important; display: block !important; }
     div.stNumberInput { max-width: 700px; margin: 0 auto !important; }
@@ -54,7 +54,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 4. دالة جلب السعر ---
+# --- 3. دوال الحساب وجلب البيانات ---
 def get_gold_spot_price():
     default_price = 4497.0
     if YF_AVAILABLE:
@@ -65,7 +65,7 @@ def get_gold_spot_price():
         except: return default_price
     return default_price
 
-# --- 5. واجهة المستخدم ---
+# --- 4. واجهة المستخدم ---
 st.markdown("<div class='main-title'>🔱 نظام تسعير الذهب العالمي 🔱</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>دقة عالمية في متناول يدك لأسعار الذهب والسبائك</div>", unsafe_allow_html=True)
 
@@ -75,7 +75,9 @@ col_main, col_side = st.columns([2.3, 1])
 with col_main:
     ounce_input = st.number_input("أدخل سعر الأونصة العالمي الحالي ($)", value=float(live_price))
     troy_ounce = 31.1035
-    p24, p21, p18 = ounce_input/troy_ounce, (ounce_input/troy_ounce)*0.875, (ounce_input/troy_ounce)*0.75
+    p24 = ounce_input / troy_ounce
+    p21 = p24 * 0.875
+    p18 = p24 * 0.75
     
     c1, c2, c3 = st.columns(3)
     with c1: st.markdown(f"<div class='price-card'><div class='gold-label'>عيار 24</div><div class='price-val'>${p24:.2f}</div></div>", unsafe_allow_html=True)
@@ -93,9 +95,9 @@ with col_side:
         </div>
     """, unsafe_allow_html=True)
 
-# سياسة الخصوصية لضمان القبول
-st.markdown("<br>", unsafe_allow_html=True)
+# سياسة الخصوصية (شرط أساسي للقبول)
+st.divider()
 with st.expander("📄 سياسة الخصوصية"):
-    st.write("هذا الموقع يستخدم ملفات تعريف الارتباط لعرض الإعلانات. نحن لا نجمع بيانات شخصية.")
+    st.write("هذا الموقع يستخدم ملفات تعريف الارتباط لعرض الإعلانات. نحن لا نجمع بيانات شخصية عن المستخدمين.")
 
 st.markdown("<div class='developer-credit'>تم التطوير بواسطة: عقيل فرح 👨‍💻</div>", unsafe_allow_html=True)
