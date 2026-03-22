@@ -2,18 +2,18 @@ import streamlit as st
 import streamlit.components.v1 as components
 import os
 
-# --- 1. إثبات الملكية لـ AdSense وحل مشكلة ads.txt لـ Streamlit ---
-# هذا الجزء ضروري جداً لقبول جوجل للموقع
+# --- 1. حل مشكلة إثبات الملكية لـ Google AdSense (Meta Tag & ads.txt) ---
+# تأكد من وضع كود التحقق الذي أرسلته لي
 VERIFY_META = '<meta name="google-adsense-account" content="ca-pub-6456486381436649">'
 
-# معالجة طلب ads.txt المباشر (مثل الصورة التي أرسلتها سابقاً)
+# معالجة طلب ads.txt المباشر لضمان رؤية جوجل للملف
 if "ads" in st.query_params:
     if os.path.exists("ads.txt"):
         with open("ads.txt", "r") as f:
             st.text(f.read())
         st.stop()
 
-# مكتبة الأسعار العالمية
+# مكتبة جلب السعر العالمي
 try:
     import yfinance as yf
     YF_AVAILABLE = True
@@ -23,7 +23,7 @@ except ImportError:
 # --- 2. إعدادات الصفحة والهوية البصرية ---
 st.set_page_config(page_title="جوست ماركت - تسعير الذهب", page_icon="🔱", layout="wide")
 
-# حقن كود التحقق وكود الإعلانات في "رأس" الموقع
+# حقن كود التحقق وكود الإعلانات في رأس الصفحة
 ads_verify_and_script = f"""
 {VERIFY_META}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6456486381436649"
@@ -31,19 +31,19 @@ ads_verify_and_script = f"""
 """
 components.html(ads_verify_and_script, height=0)
 
-# --- 3. التنسيق الجمالي (CSS) - خلفية شارت ملونة وتصميم فاخر ---
+# --- 3. التنسيق الجمالي (CSS) - الخلفية الفخمة ومؤشر الشارت الملون الرائع ---
 st.markdown("""
     <style>
     /* إخفاء علامات Streamlit الافتراضية */
     #MainMenu, footer, header {visibility: hidden;}
     .stDeployButton {display:none;}
     
-    /* تصميم خلفية مؤشر شارت متحرك ورائع */
+    /* تصميم خلفية مؤشر شارت متحرك ورائع فوق الأسود الفخم */
     [data-testid="stAppViewContainer"] {
-        background-color: #0b0b0e;
+        background-color: #0b0b0e; /* هذا هو اللون الفخم الذي أرسلته */
         background-image: 
             linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)),
-            url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDUwIiBoZWlnaHQ9IjM5MSIgdmlld0JveD0iMCAwIDEwNTAgMzkxIj48cGF0aCBkPSJNOTU5IDM0NmwzNyAyMSAyNCA0NE04MjQgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMjU5IDEwOEwzMDQgMTI2bDM0LTQzbC0zNC00M0wyNTkgNjVNMzg0IDY1TDQyOCA4MmwzNC00M0w0MjggNGwtNDQtNDNMMzg0IDY1TTEzNSA2NWw0NCAxN2wzNC00M0wxNzkgNHwtNDQtNDNMMTM1IDY1TTAgNjVsNDQgMTdsMzQtNDNMNDQgNHwtNDQtNDNMMCA2NU01NTAgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNODU5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNNDQ5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTU5IDI0OGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTAgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNNDAwIDI0OGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTAgMzQ2bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAzNDZsLTEzLTQzbC0zNC00M0w5NTkgMzQ2TTQ5OSAzNDZsMzItMTggMzIgMTggMzIgMTgtMzYtNDRGNTMzIDM0NmwtMzIgMTgtMzIgMTgvPiA8cGF0aCBkPSJNMzQ5IDEwOGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTU0OSAxMDhsLTMyLTQzbC0zNC00M0w0NTkgNjVNMTE5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAyNDhsLTEzLTQzbC0zNC00M0w5NTkgMjQ4TTczOSAyNDhsLTMyLTQzbC0zNC00M0w2NDkgMTc4TTMzOSAyNDhsLTMyLTQzbC0zNC00M0wyNDkgMTc4TTE0OSAzNDZ sMzItMTggMzIgMTggMzIgMTgtMzYtNDREMTgzIDM0NmwtMzIgMTgtMzIgMTgvPiA8L3N2Zz4=');
+            url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDUwIiBoZWlnaHQ9IjM5MSIgdmlld0JveD0iMCAwIDEwNTAgMzkxIj48cGF0aCBkPSJNOTU5IDM0NmwzNyAyMSAyNCA0NE04MjQgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMjU5IDEwOEwzMDQgMTI2bDM0LTQzbC0zNC00M0wyNTkgNjVNMzg0IDY1TDQyOCA4MmwzNC00M0w4MjggNGwtNDQtNDNMMzg0IDY1TTEzNSA2NWw0NCAxN2wzNC00M0wxNzkgNHwtNDQtNDNMMTM1IDY1TTAgNjVsNDQgMTdsMzQtNDNMNDQgNHwtNDQtNDNMMCA2NU01NTAgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNMTA0OSAxMDhsLTEzLTQzbC0zNC00M0w5NTkgNjVNODU5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNNDQ5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTU5IDI0OGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTAgMjQ4bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNNDAwIDI0OGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTAgMzQ2bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAzNDZsLTEzLTQzbC0zNC00M0w5NTkgMzQ2TTQ5OSAzNDZsMzItMTggMzIgMTggMzIgMTgtMzYtNDRGNTMzIDM0NmwtMzIgMTgtMzIgMTgvPiA8cGF0aCBkPSJNMzQ5IDEwOGwzMi0xOCAzMiAxOCAzMiAxOC0zNi00NGwtMzIgMThsLTMyIDE4LTMyIDE4TTU0OSAxMDhsLTMyLTQzbC0zNC00M0w0NTkgNjVNMTE5IDY1bDMyLTE4IDMyIDE4IDMyIDE4LTM2LTQ0bC0zMiAxOGwtMzIgMTgtMzIgMThNMTA0OSAyNDhsLTEzLTQzbC0zNC00M0w5NTkgMjQ4TTczOSAyNDhsLTMyLTQzbC0zNC00M0w2NDkgMTc4TTMzOSAyNDhsLTMyLTQzbC0zNC00M0wyNDkgMTc4TTE0OSAzNDZ sMzItMTggMzIgMTggMzIgMTgtMzYtNDREMTgzIDM0NmwtMzIgMTgtMzIgMTgvPiA8L3N2Zz4=');
         background-repeat: repeat;
         background-attachment: fixed;
         background-size: 300px;
@@ -84,7 +84,7 @@ st.markdown("""
     .price-val { color: white; font-size: 50px; font-weight: bold; margin-top: 10px; }
     .gold-label { color: #ffd700; font-size: 24px; font-weight: bold; }
     
-    /* القسم الجانبي - "جوست ماركت" وشعار الوكالة */
+    /* القسم الجانبي المخصص لـ "جوست ماركت"وشعار الوكالة */
     .agency-box {
         border: 2px solid #ffd700; padding: 25px; border-radius: 15px; 
         background-color: rgba(38, 38, 33, 0.9); text-align: center;
@@ -124,7 +124,7 @@ with col_main:
     # خانة إدخال السعر
     ounce_input = st.number_input("أدخل سعر الأونصة العالمي الحالي ($)", value=float(live_price))
     
-    # العمليات الحسابية
+    # العمليات الحسابية بناءً على وزن الأونصة
     troy_ounce = 31.1035
     p24 = ounce_input / troy_ounce
     p21 = p24 * 0.875
@@ -137,30 +137,8 @@ with col_main:
     with c3: st.markdown(f"<div class='price-card'><div class='gold-label'>عيار 18</div><div class='price-val'>${p18:.2f}</div></div>", unsafe_allow_html=True)
 
 with col_side:
-    # القسم الجانبي المخصص لـ "جوست ماركت"
+    # القسم الجانبي المخصص لـ "جوست ماركت" وشعار الوكالة
     st.markdown(f"""
         <div class='agency-box'>
             <div class='agency-logo-container'>
                 <span style='font-size: 50px;'>🔱</span><br>
-                <span style='font-size: 28px; font-weight: bold;'>جوست ماركت</span>
-            </div>
-            <h2 style='color: #ffd700; margin-bottom: 15px;'>📉 استثمر في الذهب</h2>
-            <a class='btn-gold' href='https://justmarkets.com/'>فتح حساب تداول تحت وكالتنا</a>
-            <a class='btn-white' href='#'>تحميل تطبيق مباشر</a>
-            <a class='btn-wa' href='https://wa.me/963950555563'>💬 تواصل واتساب مباشر</a>
-            <p style='font-size: 14px; color: #888; margin-top: 15px;'>الوكيل المعتمد لجوست ماركت: 0950555563</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-# --- 6. قسم سياسة الخصوصية واستخدام البيانات ---
-st.markdown("<br><br>", unsafe_allow_html=True)
-with st.expander("📄 سياسة الخصوصية لموقع جوست ماركت"):
-    st.write("""
-    ### سياسة الخصوصية واستخدام البيانات
-    هذا الموقع يوفر أسعار الذهب للأغراض المعلوماتية فقط. نحن لا نجمع أي بيانات شخصية أو حساسة عن زوارنا. 
-    يتم استخدام كوكيز الطرف الثالث عبر **Google AdSense** لعرض الإعلانات بناءً على زياراتك السابقة.
-    بإمكانك تعطيل ملفات تعريف الارتباط من إعدادات متصفحك في أي وقت.
-    """)
-
-# التوقيع الذهبي المكبر
-st.markdown("<div class='developer-credit'>تم التطوير بواسطة: عقيل فرح 👨‍💻</div>", unsafe_allow_html=True)
