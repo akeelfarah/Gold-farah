@@ -4,13 +4,13 @@ import yfinance as yf
 # 1. إعدادات الصفحة والهوية البصرية
 st.set_page_config(page_title="جوست ماركت - تسعير الذهب", page_icon="🔱", layout="wide")
 
-# تنسيق CSS مخصص للتكبير وتعديل الأزرار
+# تنسيق CSS النهائي (الخلفية، الخطوط، والأزرار)
 st.markdown("""
     <style>
     #MainMenu, footer, header {visibility: hidden;}
     .stDeployButton {display:none;}
     
-    /* لون الخلفية الداكن المطلوب */
+    /* لون الخلفية الداكن الفخم */
     [data-testid="stAppViewContainer"] {
         background-color: #1a1a16;
         color: white;
@@ -31,12 +31,12 @@ st.markdown("""
         display: block !important;
     }
     
-    /* تكبير خانة إدخال السعر لتصبح ضخمة وواضحة */
+    /* تكبير خانة إدخال السعر */
     div.stNumberInput { max-width: 700px; margin: 0 auto !important; }
     input { 
         text-align: center !important; 
         font-size: 35px !important; 
-        height: 70px !important;
+        height: 75px !important;
         color: white !important; 
         background-color: #262621 !important; 
         border: 2px solid #ffd700 !important; 
@@ -54,7 +54,7 @@ st.markdown("""
     .price-val { color: white; font-size: 50px; font-weight: bold; margin-top: 10px; }
     .gold-label { color: #ffd700; font-size: 24px; font-weight: bold; }
 
-    /* تنسيق العمود الجانبي والأزرار الثلاثة */
+    /* تنسيق العمود الجانبي والأزرار */
     .sidebar-card {
         border: 1px solid #ffd700;
         padding: 25px;
@@ -74,6 +74,16 @@ st.markdown("""
         background-color: #25d366; color: white !important; padding: 15px; border-radius: 10px;
         text-decoration: none; display: block; margin: 12px 0; font-weight: bold; font-size: 18px;
     }
+
+    /* تنسيق التوقيع الذهبي في الأسفل */
+    .developer-credit {
+        text-align: center;
+        color: #ffd700;
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 50px;
+        letter-spacing: 1px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -87,7 +97,7 @@ def get_gold_spot_price():
     except:
         return 2290.0
 
-# 3. واجهة المستخدم
+# 3. واجهة المستخدم الرئيسية
 st.markdown("<div class='main-title'>🔱 نظام تسعير الذهب العالمي 🔱</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>دقة عالمية في متناول يدك</div>", unsafe_allow_html=True)
 
@@ -95,8 +105,8 @@ live_price = get_gold_spot_price()
 col_main, col_side = st.columns([2.3, 1])
 
 with col_main:
-    # خانة السعر المكبرة
-    ounce_input = st.number_input("أدخل سعر الأونصة العالمي ($)", value=float(live_price))
+    # مدخل السعر المطور
+    ounce_input = st.number_input("أدخل سعر الأونصة العالمي الحالي ($)", value=float(live_price))
     
     troy_ounce = 31.1035
     p24 = ounce_input / troy_ounce
@@ -114,15 +124,16 @@ with col_main:
         st.markdown(f"<div class='price-card'><div class='gold-label'>عيار 18</div><div class='price-val'>${p18:.2f}</div></div>", unsafe_allow_html=True)
 
 with col_side:
-    # الأزرار الثلاثة بتنسيق موحد وأنيق
+    # الأزرار وتنسيق الواتساب الموحد
     st.markdown(f"""
         <div class='sidebar-card'>
             <h2 style='color: #ffd700; margin-bottom: 20px;'>📈 استثمر في الذهب</h2>
-            <a class='btn-gold' href='https://one.justmarkets.link/a/4f59i0rjez'>فتح حساب تحت وكالتنا</a>
+            <a class='btn-gold' href='https://justmarkets.com/'>فتح حساب تحت وكالتنا</a>
             <a class='btn-white' href='#'>تحميل تطبيق مباشر</a>
             <a class='btn-wa' href='https://wa.me/963950555563'>💬 تواصل واتساب مباشر</a>
-            <p style='font-size: 12px; color: #888; margin-top: 10px;'>الوكيل المعتمد: 0950555563</p>
+            <p style='font-size: 14px; color: #888; margin-top: 15px;'>الوكيل المعتمد: 0950555563</p>
         </div>
     """, unsafe_allow_html=True)
 
-st.markdown("<br><p style='text-align: center; color: #555;'>تم التطوير بواسطة: عقيل فرح 👨‍💻</p>", unsafe_allow_html=True)
+# 4. التوقيع النهائي المكبر باللون الذهبي
+st.markdown("<div class='developer-credit'>تم التطوير بواسطة: عقيل فرح 👨‍💻</div>", unsafe_allow_html=True)
