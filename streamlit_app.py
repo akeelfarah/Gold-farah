@@ -1,151 +1,115 @@
 import streamlit as st
-import pandas as pd
-import math
-from pathlib import Path
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
-)
+# 1. إعدادات الصفحة
+st.set_page_config(page_title="نظام تسعير الذهب | عقيل فرح", page_icon="💰", layout="wide")
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
+# 2. تصميم الواجهة المتقدم (CSS)
+st.markdown("""
+    <style>
+    /* تحسين الخلفية */
+    .stApp {
+        background: linear-gradient(135deg, #0d0d0b, #1a1a16, #2d2d24);
+        color: white;
+    }
+    
+    /* تصميم البطاقات السعرية */
+    .price-card {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 25px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        text-align: center;
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .label-text {
+        color: #ffd700;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .price-text {
+        color: #ffffff;
+        font-size: 48px; /* خط كبير جداً للسعر */
+        font-weight: 900;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    /* تنسيق الأزرار */
+    .main-btn {
+        background: linear-gradient(90deg, #ffd700, #b8860b);
+        color: black !important;
+        padding: 15px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: bold;
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+        font-size: 18px;
+    }
+    
+    .dev-footer {
+        text-align: center;
+        padding: 30px;
+        color: #ffd700;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 215, 0, 0.1);
+    }
 
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
+    /* لضمان التجاوب مع الموبايل */
+    @media (max-width: 768px) {
+        .price-text { font-size: 36px; }
+        .label-text { font-size: 20px; }
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
+# 3. الهيدر
+st.markdown("<h1 style='text-align: center; color: #ffd700;'>🔱 نظام تسعير الذهب العالمي 🔱</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; opacity: 0.8;'>دقة عالمية في متناول يدك</p>", unsafe_allow_html=True)
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+# 4. منطقة العمل
+col1, col2 = st.columns([1.5, 1], gap="large")
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+with col1:
+    st.markdown('<div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px;">', unsafe_allow_html=True)
+    ounce_price = st.number_input("أدخل سعر الأونصة ($)", min_value=0.0, value=4490.0, step=0.1)
+    
+    # الحسابات
+    g24 = ounce_price / 31.1035
+    g21 = g24 * 0.875
+    g18 = g24 * 0.75
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # عرض الأسعار بخط كبير جداً
+    c1, c2, c3 = st.columns(3)
+    
+    with c1:
+        st.markdown(f'<div class="price-card"><div class="label-text">عيار 24</div><div class="price-text">${g24:.2f}</div></div>', unsafe_allow_html=True)
+    with c2:
+        st.markdown(f'<div class="price-card"><div class="label-text">عيار 21</div><div class="price-text">${g21:.2f}</div></div>', unsafe_allow_html=True)
+    with c3:
+        st.markdown(f'<div class="price-card"><div class="label-text">عيار 18</div><div class="price-text">${g18:.2f}</div></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
+with col2:
+    st.markdown(f"""
+        <div style="background: rgba(0,0,0,0.3); padding: 25px; border-radius: 20px; border: 1px solid #ffd700; text-align: center;">
+            <h2 style='color: #ffd700;'>📈 استثمر في الذهب</h2>
+            <p>تداول الذهب برافعة مالية وسبريد منخفض جداً عبر JustMarkets</p>
+            <a href="https://one.justmarkets.link/a/4f59i0rjez" class="main-btn">فتح حساب تداول وكيل</a>
+            <a href="https://justmarkets.com/downloads" class="main-btn" style="background: white;">تحميل التطبيق المباشر</a>
+            <hr style='border-color: rgba(255,215,0,0.2)'>
+            <a href="https://wa.me/963950555563" style="color: #ffd700; text-decoration: none; font-weight: bold;">💬 واتساب: 0950555563</a>
+        </div>
+    """, unsafe_allow_html=True)
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
-
-    return gdp_df
-
-gdp_df = get_gdp_data()
-
-# -----------------------------------------------------------------------------
-# Draw the actual page
-
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
-
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
-
-# Add some spacing
-''
-''
-
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
-
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
-
-''
-''
-
-
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
-
-st.header(f'GDP in {to_year}', divider='gray')
-
-''
-
-cols = st.columns(4)
-
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
-
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
-
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
+# 5. التوقيع النهائي
+st.markdown('<div class="dev-footer">👨‍💻 تم التطوير بواسطة: عقيل فرح</div>', unsafe_allow_html=True)
