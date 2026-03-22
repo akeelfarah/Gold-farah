@@ -2,13 +2,16 @@ import streamlit as st
 import streamlit.components.v1 as components
 import os
 
-# 1. وظيفة إظهار ads.txt لإثبات الملكية (حل مشكلة الرفض)
-# عند إضافة ?ads لنهاية رابط موقعك، سيظهر محتوى الملف لجوجل
+# --- 1. حل مشكلة إثبات الملكية لـ AdSense (Meta Tag & ads.txt) ---
+# هذا الكود سيجعل جوجل يرى ملف ads.txt الخاص بك فوراً عند الطلب
 if "ads" in st.query_params:
     if os.path.exists("ads.txt"):
         with open("ads.txt", "r") as f:
             st.text(f.read())
         st.stop()
+
+# كود التحقق (Meta Tag) الذي أرسلته في الصورة
+verification_tag = '<meta name="google-adsense-account" content="ca-pub-6456486381436649">'
 
 try:
     import yfinance as yf
@@ -16,18 +19,17 @@ try:
 except ImportError:
     YF_AVAILABLE = False
 
-# 2. إعدادات الصفحة وكود التحقق (Meta Tag)
+# --- 2. إعدادات الصفحة والهوية البصرية ---
 st.set_page_config(page_title="جوست ماركت - تسعير الذهب", page_icon="🔱", layout="wide")
 
-# حقن كود التحقق وكود الإعلانات في رأس الصفحة
-ads_verify_script = """
-<meta name="google-adsense-account" content="ca-pub-6456486381436649">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6456486381436649"
+# حقن كود التحقق وكود الإعلانات في "رأس" الموقع
+components.html(f"""
+    {verification_tag}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6456486381436649"
      crossorigin="anonymous"></script>
-"""
-components.html(ads_verify_script, height=0)
+""", height=0)
 
-# 3. التنسيق وإخفاء علامات Streamlit
+# التنسيق البصري الكامل (CSS)
 st.markdown("""
     <style>
     #MainMenu, footer, header {visibility: hidden;}
@@ -39,7 +41,7 @@ st.markdown("""
     div.stNumberInput { max-width: 700px; margin: 0 auto !important; }
     input { text-align: center !important; font-size: 35px !important; height: 75px !important; color: white !important; background-color: #262621 !important; border: 2px solid #ffd700 !important; border-radius: 15px !important; }
     .price-card { border: 1px solid #3d3d36; padding: 35px; border-radius: 15px; text-align: center; background-color: #262621; margin-top: 20px; }
-    .price-val { color: white; font-size: 45px; font-weight: bold; margin-top: 10px; }
+    .price-val { color: white; font-size: 45px; font-weight: bold; }
     .gold-label { color: #ffd700; font-size: 24px; font-weight: bold; }
     .btn-gold { background-color: #ffd700; color: #000 !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; font-size: 18px; }
     .btn-white { background-color: white; color: #000 !important; padding: 15px; border-radius: 10px; text-decoration: none; display: block; margin: 12px 0; font-weight: bold; text-align: center; font-size: 18px; }
@@ -48,18 +50,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 4. منطق العمل (الحسابات)
+# --- 3. جلب الأسعار والحسابات ---
 def get_gold_spot_price():
-    default_p = 4497.0
+    default_price = 4497.0
     if YF_AVAILABLE:
         try:
             gold = yf.Ticker("GC=F")
             data = gold.history(period="1d")
             if not data.empty: return round(data['Close'].iloc[-1], 2)
-        except: return default_p
-    return default_p
+        except: return default_price
+    return default_price
 
-# 5. عرض المحتوى
+# --- 4. عرض الموقع ---
 st.markdown("<div class='main-title'>🔱 نظام تسعير الذهب العالمي 🔱</div>", unsafe_allow_html=True)
 live_price = get_gold_spot_price()
 col_main, col_side = st.columns([2.3, 1])
@@ -80,11 +82,13 @@ with col_side:
             <a class='btn-gold' href='https://justmarkets.com/'>فتح حساب تحت وكالتنا</a>
             <a class='btn-white' href='#'>تحميل تطبيق مباشر</a>
             <a class='btn-wa' href='https://wa.me/963950555563'>💬 تواصل واتساب مباشر</a>
+            <p style='font-size: 14px; color: #888; margin-top: 15px;'>الوكيل المعتمد: 0950555563</p>
         </div>
     """, unsafe_allow_html=True)
 
-# سياسة الخصوصية (إلزامية للقبول)
+# سياسة الخصوصية للقبول
+st.divider()
 with st.expander("📄 سياسة الخصوصية"):
     st.write("هذا الموقع يستخدم ملفات تعريف الارتباط لعرض الإعلانات. نحن لا نجمع بيانات شخصية.")
 
-st.markdown("<div class='developer-credit'>تم التطوير بواسطة: عقيل فرح 👨‍💻</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='developer-credit'>تم التطوير بواسطة: عقيل فرح 👨‍💻</div>", unsafe_allow_html=True)
